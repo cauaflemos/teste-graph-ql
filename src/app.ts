@@ -1,9 +1,10 @@
-import express from 'express';
+import express from "express";
+import { appRoutes } from "./routes/index";
 
 const app = express();
 
 app.use(express.json());
 
-app.listen(3000);
+appRoutes(app);
 
-console.log("rodou");
+app.listen(3000);
