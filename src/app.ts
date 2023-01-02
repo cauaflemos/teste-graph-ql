@@ -1,10 +1,26 @@
+import { ApolloServer } from "apollo-server-express";
+import Schema from "./Schema";
+import Resolvers from "./Resolvers";
 import express from "express";
-import { appRoutes } from "./routes/index";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import http from "http";
 
-const app = express();
+async function startApolloServer(schema: any, resolvers: any) {
 
-app.use(express.json());
+  const app = express();
 
-appRoutes(app);
+  const httpServer = http.createServer(app);
 
-app.listen(3000);
+  const server = new ApolloServer({
+    typeDefs: schema,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  }) as any;
+
+  await server.start();
+  server.applyMiddleware({ app });
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: 3000 }, resolve)
+  );
+}
+startApolloServer(Schema, Resolvers);
