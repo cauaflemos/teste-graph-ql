@@ -20,7 +20,7 @@ async function startApolloServer(schema: any, resolvers: any) {
   await server.start();
   server.applyMiddleware({ app });
   await new Promise<void>((resolve) =>
-    httpServer.listen({ port: 3000 }, resolve)
+    httpServer.listen({ port: 4000 }, resolve)
   );
 }
 startApolloServer(Schema, Resolvers);
